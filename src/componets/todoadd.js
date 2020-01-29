@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import uuid from 'uuid';
 
 class TodoAdd extends Component{
     constructor(props){
@@ -7,7 +8,7 @@ class TodoAdd extends Component{
         this.onhandleSubmit=this.onhandleSubmit.bind(this);
         this.handleChange=this.handleChange.bind(this);
     }
-    handleChange(evt){
+    handleChange(evt){    
         this.setState({
             [evt.target.name]:evt.target.value
         })
@@ -15,7 +16,7 @@ class TodoAdd extends Component{
     onhandleSubmit(evt){
         evt.preventDefault();
         
-        this.props.handleSubmit(this.state.task)
+        this.props.handleSubmit({...this.state,id:uuid()})
         this.setState({
             task:""
         })
