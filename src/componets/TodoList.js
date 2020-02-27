@@ -1,32 +1,49 @@
 import React,{Component} from 'react';
-import TodoAdd from './todoadd';
-import Todo from './Todo';
-
+import Todo from "./Todo";
+import Todoadd from "./todoadd";
 class TodoList extends Component{
     constructor(props){
         super(props);
-        this.state={todos:[],id:''}
+        this.state={todos:[]}
         this.create=this.create.bind(this);
         this.remove=this.remove.bind(this);
+        this.update=this.update.bind(this);
     }
-    create(task){
-        const newTodos=[...this.state.todos,task];
-        this.setState({todos:newTodos});
-        }
+    create(newTodo){
+        this.setState({
+            todos:[...this.state.todos,newTodo]
+        })
+    }
     remove(id){
-        const newtodos=this.state.todos.filter(t=>t.id!==id);
-        this.setState({todos:newtodos});
-    }    
+        this.setState({
+            todos:this.state.todos.filter(t=>t.id!==id)
+        })
+    }
+    update(id,updatedtask){
+        const updatedTodos=this.state.todos.map(todo=>{
+            if(todo.id===id){
+                return{...todo,task:updatedtask}
+            }
+            return todo;
+        })
+        this.setState({
+            todos:updatedTodos
+        })
+    }
     render(){
         const todos=this.state.todos.map(todo=>{
-            return <Todo  key={todo.id} task={todo.task} id={todo.id} remove={this.remove}/>
+            return <Todo key={todo.id} id={todo.id} task={todo.task} removeTodo={this.remove} updateTodo={this.update} />
         })
         return(
-           <div>
-            <TodoAdd handleSubmit={this.create}/>
-           <ul>{todos}</ul>
-           </div>
-        );
+           
+
+            <div>
+                <h1>Hii Todo List</h1>
+                
+                <Todoadd createTodo={this.create}/>
+                <ul>{todos}</ul>
+            </div>
+        )
     }
 }
 export default TodoList;
